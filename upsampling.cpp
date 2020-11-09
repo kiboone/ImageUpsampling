@@ -8,14 +8,15 @@
 
 using namespace std;
 
-int* nearestNeighbor(int, int, int[], int);
+int* nearestNeighbor(int, int, int[]);
+int* bilinear(int, int, int*);
 
 int main(int argc, char ** argv){
     int pix;
     char comma;
     // int pixels[array_size][array_size];
 
-    int array_size = 256;
+    int array_size = 4;
     int pixels[array_size * array_size];
 
     if (argc != 3) {    
@@ -39,39 +40,38 @@ int main(int argc, char ** argv){
     // Input RBG values from input file
     for(int i = 0; i < array_size * array_size; i++){
         infile >> pix;
-        infile >> comma;
+        if(infile.peek() == ',') {
+            infile >> comma;
+        }
         pixels[i] = pix;
     }
-    cout << "check1\n";
 
-    // Nearest Neighbor
     int new_size = array_size * 2;
-    int* nn_pixels_1d = nearestNeighbor(array_size, new_size, pixels, 2);
-    // for (int i = 0;i < new_size* new_size; i++){
-    //     cout << nn_pixels_1d[i] << " ";
-    // }
     int nn_pixels[new_size][new_size];
+
+
+    /* Image Upsampling Function Calls */
+    int* nn_pixels_1d = nearestNeighbor(array_size, new_size, pixels);
+    // int* nn_pixels_1d = bilinear(array_size, new_size, pixels);
+    
+
+    // Convert to 2D array
     int idx = 0;
-    for(int i = 0; i < array_size; i++){
-        for(int j = 0; j < array_size; j++){
+    for(int i = 0; i < new_size; i++){
+        for(int j = 0; j < new_size; j++){
             nn_pixels[i][j] = nn_pixels_1d[idx];
             idx++;
         }
     }
 
-    for(int i = 0; i < array_size; i++){
-        for(int j = 0; j < array_size; j++){
-            cout << nn_pixels[i][j] << " ";
-        }
-        cout << endl;
-    }
-    // Print pixels to output file
-    for(int i = 0; i < array_size; i++){
-        for(int j = 0; j < array_size; j++){
-            outfile << nn_pixels[i][j] << " ";
+    idx = 0;
+    for(int i = 0; i < new_size; i++){
+        for(int j = 0; j < new_size; j++){
+            outfile << nn_pixels[i][j] << ",";
         }
         outfile << endl;
     }
+
 
     infile.close();
     outfile.close();
@@ -79,35 +79,48 @@ int main(int argc, char ** argv){
 }
 
 
-int* nearestNeighbor(int array_size, int new_size, int* pixels, int ratio) {
-    cout << "check2\n";
-
-    // int temp[new_size * new_size];
-    // double ratio = 2 ;
-    // double px, py; 
-    // for (int i = 0; i < new_size; i++) {
-    //     for (int j = 0; j < new_size; j++) {
-    //         cout << "woo\n";
-    //         px = floor(j * ratio) ;
-    //         py = floor(i * ratio) ;
-    //         temp[(i * new_size) + j] = pixels[(int)((py * array_size) + px)] ;
-    //     }
-    // }
-    // pixels = temp;
-
-    int temp[new_size * new_size] ;
-    
-    double x_ratio = array_size/(double)new_size ;
-    double y_ratio = array_size/(double)new_size ;
+int* nearestNeighbor(int array_size, int new_size, int* pixels) {
+    int* temp  = new int[new_size * new_size] ;
+    double ratio = array_size/(double)new_size ;
     double px, py ; 
-    for (int i=0;i<new_size;i++) {
-        for (int j=0;j<new_size;j++) {
-            px = floor(j*x_ratio) ;
-            py = floor(i*y_ratio) ;
-            temp[(i*new_size)+j] = pixels[(int)((py*array_size)+px)] ;
+    for (int i = 0; i < new_size; i++) {
+        for (int j = 0; j < new_size; j++) {
+            px = floor(j * ratio) ;
+            py = floor(i * ratio) ;
+            temp[(i * new_size) + j] = pixels[(int)((py * array_size) + px)] ;
         }
     }
-    pixels = temp;
-    cout << "check3\n";
-    return pixels ;
+    return temp ;
+}
+
+
+int* bilinear(int array_size, int new_size, int* pixels) {
+    int * temp = new int[new_size * new_size];
+    int A, B, C, D, x, y, index, gray;
+    float x_ratio = ((float)(array_size - 1))/ new_size;
+    float y_ratio = ((float)(array_size - 1))/ new_size;
+    float x_diff, y_diff, ya, yb;
+    int offset = 0 ;
+    for (int i = 0; i < new_size; i++) {
+        for (int j = 0; j < new_size; j++) {
+            x = (int)(x_ratio * j);
+            y = (int)(y_ratio * i);
+            x_diff = (x_ratio * j) - x;
+            y_diff = (y_ratio * i) - y;
+            index = y * array_size + x;
+
+            A = pixels[index] & 0xff;
+            B = pixels[index+1] & 0xff;
+            C = pixels[index + array_size] & 0xff;
+            D = pixels[index + array_size + 1] & 0xff;
+            
+            pix = (int)(
+                    A*(1-x_diff)*(1-y_diff) +  B*(x_diff)*(1-y_diff) +
+                    C*(y_diff)*(1-x_diff)   +  D*(x_diff*y_diff)
+                    );
+
+            temp[offset++] = pix;                                   
+        }
+    }
+    return temp;
 }
