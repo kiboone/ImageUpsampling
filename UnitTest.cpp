@@ -27,7 +27,6 @@
 //     EXPECT_EQ(1,1);
 // };
 
-
 // 1x1 to 4x4
 TEST(NNTest, Test1){
     int input[1] = {0};
@@ -49,7 +48,7 @@ TEST(NNTest, Test3){
     EXPECT_TRUE(ArraysMatch(output,nearestNeighbor(3,6,input), 36));
 };
 
-// 5x5 t 10x10
+// 5x5 to 10x10
 TEST(NNTest, Test4){
     int input[25] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25};
     int output[100] = {1,1,2,2,3,3,4,4,5,5,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,6,6,7,7,8,8,9,9,10,10,

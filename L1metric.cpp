@@ -1,3 +1,7 @@
+/*
+    Compute L1 Metric between two pixel arrays 
+*/
+
 #include <iostream>
 #include <vector>
 #include <utility> 

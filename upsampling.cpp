@@ -19,8 +19,6 @@ int* bilinear(int, int, int*);
 int main(int argc, char ** argv){
     int pix;
     char comma;
-    // int pixels[array_size][array_size];
-
     int array_size = 256;
     int pixels[array_size * array_size];
 
@@ -31,7 +29,6 @@ int main(int argc, char ** argv){
 
     ifstream infile;
     ofstream outfile;
-
     char * infilestr  = argv[1];
     char * outfilestr = argv[2];
 
@@ -53,7 +50,6 @@ int main(int argc, char ** argv){
 
     int new_size = array_size * 2;
     int nn_pixels[new_size][new_size];
-
 
     /* Image Upsampling Function Calls */
     int* nn_pixels_1d = nearestNeighbor(array_size, new_size, pixels);
@@ -77,7 +73,6 @@ int main(int argc, char ** argv){
         }
         outfile << endl;
     }
-
 
     infile.close();
     outfile.close();
