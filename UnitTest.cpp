@@ -1,6 +1,5 @@
 /*
     Unit Test file
-        Five unit tests
 */
 
 #include "gtest/gtest.h"
@@ -19,14 +18,6 @@
     return ::testing::AssertionSuccess();
 }
 
-// Sample Unit Tests
-// TEST(SampleTest1, ExpectFail){
-//     EXPECT_EQ(1,2);
-// };
-// TEST(SampleTest2, ExpectSuccess){
-//     EXPECT_EQ(1,1);
-// };
-
 // 1x1 to 4x4
 TEST(NNTest, Test1){
     int input[1] = {0};
@@ -39,6 +30,13 @@ TEST(NNTest, Test2){
     int input[4] = {1,2,3,4};
     int output[16] = {1,1,2,2,1,1,2,2,3,3,4,4,3,3,4,4};
     EXPECT_TRUE(ArraysMatch(output,nearestNeighbor(2,4,input), 16));
+};
+
+// 2x2 to 4x4 - wrong
+TEST(NNTest, Test2_1){
+    int input[4] = {1,2,3,4};
+    int output[16] = {1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4};
+    EXPECT_FALSE(ArraysMatch(output,nearestNeighbor(2,4,input), 16));
 };
 
 // 3x3 to 6x6
@@ -74,6 +72,13 @@ TEST(NNTest, Test5){
                         87,87,88,88,89,89,90,90,81,81,82,82,83,83,84,84,85,85,86,86,87,87,88,88,89,89,90,90,91,91,92,92,93,93,94,94,95,95,96,96,
                         97,97,98,98,99,99,100,100,91,91,92,92,93,93,94,94,95,95,96,96,97,97,98,98,99,99,100,100};
     EXPECT_TRUE(ArraysMatch(output,nearestNeighbor(10,20,input), 400));
+};
+
+// 2x2 to 4x4
+TEST(BilinearTest, Test1){
+    int input[4] = {1,2,3,4};
+    int output[16] = {1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3};
+    EXPECT_TRUE(ArraysMatch(output,bilinear(2,4,input), 16));
 };
 
 int main(int argc, char**argv)

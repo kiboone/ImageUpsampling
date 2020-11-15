@@ -6,17 +6,17 @@
 #include <math.h> 
 
 int* nearestNeighbor(int array_size, int new_size, int* pixels) {
-    int* temp  = new int[new_size * new_size] ;
-    double ratio = array_size/(double)new_size ;
-    double px, py ; 
+    int* temp  = new int[new_size * new_size];
+    double ratio = array_size/(double)new_size;
+    double x, y; 
     for (int i = 0; i < new_size; i++) {
         for (int j = 0; j < new_size; j++) {
-            px = floor(j * ratio) ;
-            py = floor(i * ratio) ;
-            temp[(i * new_size) + j] = pixels[(int)((py * array_size) + px)] ;
+            x = floor(j * ratio) ;
+            y = floor(i * ratio) ;
+            temp[(i * new_size) + j] = pixels[(int)((y * array_size) + x)] ;
         }
     }
-    return temp ;
+    return temp;
 }
 
 

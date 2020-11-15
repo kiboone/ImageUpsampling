@@ -8,7 +8,10 @@ test:
 	a.out
 
 coverage:
-	echo "code coverage"
+	g++ -std=c++11 -o main_test -fprofile-arcs -ftest-coverage -fPIC  UnitTest.cpp -L ./googletest/build/lib -I ./googletest/googletest/include/ -lgtest -lpthread
+	main_test
+	gcov UnitTest.cpp
+	~/.local/bin/gcovr -r . --branches
 
 metric:
 	g++ -o l1 L1metric.cpp
@@ -18,4 +21,10 @@ clean:
 	rm *.o
 
 cleantest:
+	rm UnitTest.gcda
 	rm a.out
+
+cleancov:
+	rm *.gcov
+	rm coverage.html
+	rm main_test

@@ -21,12 +21,11 @@ int main(int argc, char ** argv){
     char comma;
     int array_size = 256;
     int pixels[array_size * array_size];
-
+    
     if (argc != 3) {    
         cout << "Usage: main input.txt output.txt\n";
         return 0;
     }
-
     ifstream infile;
     ofstream outfile;
     char * infilestr  = argv[1];
