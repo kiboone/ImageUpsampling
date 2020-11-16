@@ -20,11 +20,14 @@ clean:
 	rm main
 	rm *.o
 
+cleanmet:
+	rm l1
+
 cleantest:
-	rm UnitTest.gcda
 	rm a.out
 
 cleancov:
 	rm *.gcov
-	rm coverage.html
+	rm *.gcda
+	rm *.gcno
 	rm main_test

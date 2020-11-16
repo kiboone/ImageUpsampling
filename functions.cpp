@@ -11,9 +11,9 @@ int* nearestNeighbor(int array_size, int new_size, int* pixels) {
     double x, y; 
     for (int i = 0; i < new_size; i++) {
         for (int j = 0; j < new_size; j++) {
-            x = floor(j * ratio) ;
-            y = floor(i * ratio) ;
-            temp[(i * new_size) + j] = pixels[(int)((y * array_size) + x)] ;
+            x = floor(j * ratio);
+            y = floor(i * ratio);
+            temp[(i * new_size) + j] = pixels[(int)((y * array_size) + x)];
         }
     }
     return temp;
@@ -24,14 +24,14 @@ int* bilinear(int array_size, int new_size, int* pixels) {
     int * temp = new int[new_size * new_size];
     int A, B, C, D, x, y, index, pix;
     float ratio = ((float)(array_size - 1))/ new_size;
-    float x_diff, y_diff, ya, yb;
-    int offset = 0 ;
+    float xdiff, ydiff, ya, yb;
+    int offset = 0;
     for (int i = 0; i < new_size; i++) {
         for (int j = 0; j < new_size; j++) {
             x = (int)(ratio * j);
             y = (int)(ratio * i);
-            x_diff = (ratio * j) - x;
-            y_diff = (ratio * i) - y;
+            xdiff = (ratio * j) - x;
+            ydiff = (ratio * i) - y;
             index = y * array_size + x;
 
             A = pixels[index] & 0xff;
@@ -39,10 +39,10 @@ int* bilinear(int array_size, int new_size, int* pixels) {
             C = pixels[index + array_size] & 0xff;
             D = pixels[index + array_size + 1] & 0xff;
             
-            pix = (int)(A*(1-x_diff)*(1-y_diff) +  B*(x_diff)*(1-y_diff) +
-                    C*(y_diff)*(1-x_diff)   +  D*(x_diff*y_diff));
+            pix = (int)(A * (1 - xdiff) * (1 - ydiff) + B * (xdiff) * (1 - ydiff) + C * (ydiff) * (1 - xdiff) + D * (xdiff * ydiff));
 
-            temp[offset++] = pix;                                   
+            temp[offset] = pix;       
+            offset++;                            
         }
     }
     return temp;

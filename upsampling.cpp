@@ -53,7 +53,6 @@ int main(int argc, char ** argv){
     /* Image Upsampling Function Calls */
     int* nn_pixels_1d = nearestNeighbor(array_size, new_size, pixels);
     // int* nn_pixels_1d = bilinear(array_size, new_size, pixels);
-    
 
     // Convert to 2D array
     int idx = 0;
