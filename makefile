@@ -11,7 +11,7 @@ coverage:
 	g++ -std=c++11 -o main_test -fprofile-arcs -ftest-coverage -fPIC  UnitTest.cpp -L ./googletest/build/lib -I ./googletest/googletest/include/ -lgtest -lpthread
 	main_test
 	gcov UnitTest.cpp
-	~/.local/bin/gcovr -r . --branches
+	~/.local/bin/gcovr -r . -e ".*\.h" 
 
 metric:
 	g++ -o l1 L1metric.cpp
