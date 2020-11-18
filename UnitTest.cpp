@@ -5,27 +5,12 @@
 #include "gtest/gtest.h"
 #include "functions.cpp"
 
-// Array Comparison function inspired by Fraser from https://stackoverflow.com/questions/10060110/how-does-gtest-compare-the-values-in-two-arrays
-// ::testing::AssertionResult ArraysMatch(int* expected, int* actual, int size){
-//     for (int i = 0; i < size; i++){
-//         if (expected[i] != actual[i]){
-//             return ::testing::AssertionFailure() << "array[" << i
-//                 << "] (" << actual[i] << ") != expected[" << i
-//                 << "] (" << expected[i] << ")";
-//         }
-//     }
-
-//     return ::testing::AssertionSuccess();
-// }
-
-
 bool ArraysMatch(int* expected, int* actual, int size){
     for (int i = 0; i < size; i++){
         if (expected[i] != actual[i]){
             return false;
         }
     }
-
     return true;
 }
 
